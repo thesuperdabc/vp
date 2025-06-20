@@ -2,7 +2,7 @@ token:         # Lichess OAuth2 Token.
 
 engines:
   standard:                               # Engine used for standard chess and when no suitable special engine is configured.
-    dir: "./engines/"                      # Directory containing the engine.
+    dir: "./engines"                      # Directory containing the engine.
     name: "fairy-stockfish.exe"                 # Binary name of the engine to use.
     ponder: true                          # Think on opponent's time.
     silence_stderr: false                 # Suppresses stderr output.
