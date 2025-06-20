@@ -32,6 +32,9 @@ jobs:
       - name: Подставить токен
         run: |
           sed -i "s/^token:.*/token: \"${TOKEN}\"/" config.yml
+          
+      - name: Сделать движок исполняемым
+        run: chmod +x ./engines/fairy-stockfish.exe
 
       - name: Запустить бота
         run: python user_interface.py
