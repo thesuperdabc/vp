@@ -37,5 +37,5 @@ jobs:
         run: chmod +x ./engines/fairy-stockfish.exe
 
       - name: Запустить бота
-        run: python user_interface.py
+        run: python user_interface.py --matchmaking
 
