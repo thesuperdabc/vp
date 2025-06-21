@@ -37,5 +37,5 @@ jobs:
         run: chmod +x ./engines/stockfish.exe
 
       - name: Запустить бота
-        run: python user_interface.py --matchmaking
+        run: python user_interface.py --tournament RriRExr6 Nikitosikbot-fan-club
 
