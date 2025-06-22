@@ -1,41 +1,43 @@
-name: Запуск бота
+# This is a basic workflow to help you get started with Actions
 
+name: Run bot
+
+# Controls when the workflow will run
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - "main"
+    paths:
+      - "user_interface.py"
   schedule:
-    - cron: '0 */5 * * *'  # каждые 5 часов
+    - cron: "1 */5 * * *"
 
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  run-bot:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    concurrency:
-      group: bot-restart
-      cancel-in-progress: true
-
-    env:
-      TOKEN: ${{ secrets.TOKEN }}
-
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Клонировать репозиторий
-        uses: actions/checkout@v3
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
 
-      - name: Установить Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-
-      - name: Установить зависимости
-        run: |
-          pip install -r requirements.txt
-
-      - name: Подставить токен
-        run: |
-          sed -i "s/^token:.*/token: \"${TOKEN}\"/" config.yml
+      - name: Python Dependency Installation
+        uses: py-actions/py-dependency-install@v4.0.0
+        
+      - name: Injection For my Repo
+        run: sed -i "s/Token/${{ secrets.LICHESS_KEY }}/g" config.yml
           
-      - name: Сделать движок исполняемым
+      - name: Executing the stockfish
         run: chmod +x ./engines/stockfish.exe
 
-      - name: Запустить бота
+      - name: Running the bot
         run: python user_interface.py
 
