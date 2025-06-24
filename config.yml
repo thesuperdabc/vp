@@ -9,7 +9,7 @@ engines:
     move_overhead_multiplier: 21.0         # Increase if your bot flags games too often. Default move overhead is 1 second per 1 minute initital time.
     uci_options:                          # Arbitrary UCI options passed to the engine. (Commenting allowed)
       Threads: 8                          # Max CPU threads the engine can use.
-      Hash: 1024                           # Max memory (in megabytes) the engine can allocate.
+      Hash: 2048                           # Max memory (in megabytes) the engine can allocate.
       Move Overhead: 100                  # Increase if your bot flags games too often.
 # variants:                               # Engine used for variants when no suitable special engine is configured.
 #   dir: "./engines"                      # Directory containing the engine.
@@ -166,8 +166,8 @@ matchmaking:
 #     tc: 0.5+1
 #     rated: false
 #     variant: chess960
-#   optional_settings:
-#     rated: true                         # Whether matchmaking should play rated games. Default: true
+  optional_settings:
+    rated: false                         # Whether matchmaking should play rated games. Default: true
 #     variant: standard                   # Chess variant (https://lichess.org/variant) to challenge. Default: standard
 #     weight: 100                         # Weight with which this type is selected. Default: Types are played according to their time control.
 #     multiplier: 15                      # Multiplier for calculating timeouts in matchmaking. Default: smart multiplier calculation.
@@ -182,7 +182,7 @@ messages:
   #   {cpu} to insert CPU information
   #   {ram} to insert RAM size
   # Any other words in curly braces will be removed.
-  greeting: "Hey, I'm running {engine}. Good luck! Type !help for a list of commands." # Message sent to the opponent at the beginning of a game.
+  greeting: "Humpo Dumpo! I am Endogenetic-Bot made by Realboy9000.Looking forward to start,good luck. " # Message sent to the opponent at the beginning of a game.
   goodbye: "Good game, see you next time."                                             # Message sent to the opponent after the end of a game.
   greeting_spectators: "Hey, I'm running {engine}. Type !help for a list of commands." # Message sent to the spectators at the beginning of a game.
   goodbye_spectators: "Thanks for watching."                                           # Message sent to the spectators after the end of a game.
