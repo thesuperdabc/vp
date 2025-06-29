@@ -52,7 +52,7 @@ gaviota:
   max_pieces: 5                           # Count of max pieces in the local gaviota endgame tablebases.
 
 opening_books:
-  enabled: true                          # Activate opening books.
+  enabled: false                          # Activate opening books.
   priority: 400                           # Priority with which this move source is used. Higher priority is used first.
   books:
 #   bullet:
@@ -113,7 +113,7 @@ online_moves:
     timeout: 3                            # Time the server has to respond.
 
 offer_draw:
-  enabled: true                           # Activate whether the bot should offer draw.
+  enabled: false                           # Activate whether the bot should offer draw.
   score: 10                               # If the absolute value of the score is less than or equal to this value, the bot offers/accepts draw (in cp)
   consecutive_moves: 10                   # How many moves in a row the absolute value of the score has to be below the draw value
   min_game_length: 32                     # Earliest move in which draw is offered.
