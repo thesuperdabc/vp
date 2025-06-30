@@ -52,7 +52,7 @@ gaviota:
   max_pieces: 5                           # Count of max pieces in the local gaviota endgame tablebases.
 
 opening_books:
-  enabled: false                          # Activate opening books.
+  enabled: true                          # Activate opening books.
   priority: 400                           # Priority with which this move source is used. Higher priority is used first.
   books:
 #   bullet:
@@ -61,9 +61,14 @@ opening_books:
 #       - BulletBook
 #       - DefaultBook
     standard_black:
-      selection: best_move                # Move selection is one of "weighted_random", "uniform_random" or "best_move".
+      selection: weighted_random                # Move selection is one of "weighted_random", "uniform_random" or "best_move".
       names:                              # List of names of books to use as black.
         - Torma
+        - Black
+    standard_white:
+      selection: weighted_random                # Move selection is one of "weighted_random", "uniform_random" or "best_move".
+      names:                              # List of names of books to use as black.
+        - White    
     standard:
       selection: weighted_random          # Move selection is one of "weighted_random", "uniform_random" or "best_move".
 #     max_depth: 16                       # Half move max depth. (Comment this line for max depth)
@@ -99,7 +104,7 @@ online_moves:
 #   max_moves: 1                          # Max number of moves played from Lichess cloud eval. (Comment this line for max moves)
   chessdb:
     enabled: true                        # Activate online moves from https://chessdb.cn/queryc_en/
-    priority: 250                         # Priority with which this move source is used. Higher priority is used first.
+    priority: 200                         # Priority with which this move source is used. Higher priority is used first.
     only_without_book: true              # Whether the chessdb should only be used if there is no matching book.
     min_candidates: 1                     # Minimum number of candidate moves.
     min_time: 10                          # Time the bot must have at least to use the online move. +10 seconds in games without increment.
@@ -199,3 +204,5 @@ messages:
 books:                                    # Names of the opening books (to be used above in the opening_books section) and paths to the opening books.
   DefaultBook: "./engines/DefaultBook.bin"
   Torma: "./engines/Torma.bin"
+  White: "./engines/white.bin"
+  Black: "./engines/black.bin"
