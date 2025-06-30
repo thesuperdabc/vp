@@ -69,11 +69,11 @@ opening_books:
       selection: weighted_random                # Move selection is one of "weighted_random", "uniform_random" or "best_move".
       names:                              # List of names of books to use as black.
         - White    
-    standard:
-      selection: weighted_random          # Move selection is one of "weighted_random", "uniform_random" or "best_move".
+#   standard:
+#     selection: weighted_random          # Move selection is one of "weighted_random", "uniform_random" or "best_move".
 #     max_depth: 16                       # Half move max depth. (Comment this line for max depth)
-      names:                              # List of names of books to use if there is no specific book for the time control, white, black or chess960
-        - DefaultBook
+#     names:                              # List of names of books to use if there is no specific book for the time control, white, black or chess960
+#       - DefaultBook
         
 #   Use the same pattern for 'bullet', 'blitz', 'rapid', 'classical',
 #   'antichess', 'atomic', 'chess960', 'crazyhouse', 'horde', 'kingofthehill', 'racingkings' and '3check' as well.
@@ -104,7 +104,7 @@ online_moves:
 #   max_moves: 1                          # Max number of moves played from Lichess cloud eval. (Comment this line for max moves)
   chessdb:
     enabled: true                        # Activate online moves from https://chessdb.cn/queryc_en/
-    priority: 200                         # Priority with which this move source is used. Higher priority is used first.
+    priority: 100                         # Priority with which this move source is used. Higher priority is used first.
     only_without_book: true              # Whether the chessdb should only be used if there is no matching book.
     min_candidates: 1                     # Minimum number of candidate moves.
     min_time: 10                          # Time the bot must have at least to use the online move. +10 seconds in games without increment.
@@ -118,7 +118,7 @@ online_moves:
     timeout: 3                            # Time the server has to respond.
 
 offer_draw:
-  enabled: false                           # Activate whether the bot should offer draw.
+  enabled: true                           # Activate whether the bot should offer draw.
   score: 10                               # If the absolute value of the score is less than or equal to this value, the bot offers/accepts draw (in cp)
   consecutive_moves: 10                   # How many moves in a row the absolute value of the score has to be below the draw value
   min_game_length: 32                     # Earliest move in which draw is offered.
