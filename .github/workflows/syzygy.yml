@@ -1,44 +1,44 @@
-name: Add full 3-4-5 Syzygy set to engines/syzygy
+name: Add 3-4-5 Syzygy tablebases to engines/syzygy
 
 on:
-  workflow_dispatch:        # run manually when you want
+  workflow_dispatch:            # Run manually from the Actions tab
 
 jobs:
   upload-syzygy:
     runs-on: ubuntu-latest
 
     steps:
-    # 1️⃣  Check out repo with LFS pointers enabled
-    - name: Checkout (LFS)
+    # 1️⃣  Check out repository with Git LFS support
+    - name: Checkout (LFS enabled)
       uses: actions/checkout@v4
       with:
         lfs: true
 
-    # 2️⃣  Tools we need
-    - name: Install Git-LFS & aria2
+    # 2️⃣  Install Git-LFS and aria2 downloader
+    - name: Install Git LFS & aria2
       run: |
         sudo apt-get update
         sudo apt-get install -y git-lfs aria2
         git lfs install
 
-    # 3️⃣  Download every valid 3-4-5 file (< 1 GB total)
-    - name: Download 3-4-5 Syzygy tables
+    # 3️⃣  Download the full 3-4-5 piece set (<1 GB) into engines/syzygy
+    - name: Download Syzygy 3-4-5 tables
       run: |
         mkdir -p engines/syzygy
         cd engines/syzygy
-        # pull the official file-list, then let aria2 grab them all
-        curl -sSL https://raw.githubusercontent.com/niklasf/tablebase-downloader/master/3-4-5.txt > /tmp/tables.txt
+        # Official list of valid URLs (WDL+DTZ) — total ≈ 940 MB
+        curl -sSL https://raw.githubusercontent.com/gitfos/syzygy/main/3-4-5.txt > /tmp/tables.txt
         aria2c -c -j8 -x8 -s8 -i /tmp/tables.txt
 
-    # 4️⃣  Track with Git LFS and push
-    - name: Commit & push via Git LFS
+    # 4️⃣  Track with Git LFS, commit, and push using a Personal Access Token
+    - name: Commit & push via PAT
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GH_PAT: ${{ secrets.GH_PAT }}   # Add this secret in repo Settings → Secrets → Actions
       run: |
         git lfs track "*.rtbw" "*.rtbz"
         git add .gitattributes
         git add engines/syzygy
         git config user.name  "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
-        git commit -m "Add full 3-4-5 Syzygy tablebases (≈940 MB) to engines/syzygy/" || echo "Nothing to commit"
-        git push
+        git commit -m "Add complete 3-4-5 Syzygy tablebases to engines/syzygy/" || echo "Nothing to commit"
+        git push https://x-access-token:${GH_PAT}@github.com/${{ github.repository }}.git HEAD:main
