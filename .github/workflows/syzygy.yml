@@ -1,49 +1,57 @@
-name: Add Syzygy to engines folder
+name: Add Syzygy 3-4-5 to engines/syzygy
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:            # run manually from the Actions tab
 
 jobs:
   upload-syzygy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout with LFS
+    # 1️⃣  Get the repository (with LFS pointer support)
+    - name: Checkout (LFS enabled)
       uses: actions/checkout@v4
       with:
         lfs: true
 
-    - name: Install Git LFS and aria2
+    # 2️⃣  Install the helpers we need
+    - name: Install Git-LFS & aria2
       run: |
         sudo apt-get update
         sudo apt-get install -y git-lfs aria2
         git lfs install
 
-    - name: Create engines/syzygy/ and download tablebases
+    # 3️⃣  Create engines/syzygy/ and download a <1 GB core tablebase set
+    - name: Download core 3-4-5 Syzygy files
       run: |
         mkdir -p engines/syzygy
         cd engines/syzygy
 
-        # Small, essential 3-4-5 piece TBs (< 1 GB total)
-        aria2c https://tablebase.lichess.ovh/tables/standard/3/KvK.rtbw
-        aria2c https://tablebase.lichess.ovh/tables/standard/3/KvK.rtbz
+        # ---- 3-piece ----
         aria2c https://tablebase.lichess.ovh/tables/standard/3/KPK.rtbw
         aria2c https://tablebase.lichess.ovh/tables/standard/3/KPK.rtbz
+
+        # ---- 4-piece ----
         aria2c https://tablebase.lichess.ovh/tables/standard/4/KQvK.rtbw
         aria2c https://tablebase.lichess.ovh/tables/standard/4/KQvK.rtbz
         aria2c https://tablebase.lichess.ovh/tables/standard/4/KRvK.rtbw
         aria2c https://tablebase.lichess.ovh/tables/standard/4/KRvK.rtbz
-        aria2c https://tablebase.lichess.ovh/tables/standard/5/KRPvK.rtbw
-        aria2c https://tablebase.lichess.ovh/tables/standard/5/KRPvK.rtbz
+
+        # ---- 5-piece ----
         aria2c https://tablebase.lichess.ovh/tables/standard/5/KQvKP.rtbw
         aria2c https://tablebase.lichess.ovh/tables/standard/5/KQvKP.rtbz
+        aria2c https://tablebase.lichess.ovh/tables/standard/5/KRPvK.rtbw
+        aria2c https://tablebase.lichess.ovh/tables/standard/5/KRPvK.rtbz
 
-    - name: Track and commit Syzygy files with Git LFS
+    # 4️⃣  Track the new files with Git LFS and push
+    - name: Commit Syzygy files with Git LFS
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         git lfs track "*.rtbw" "*.rtbz"
         git add .gitattributes
         git add engines/syzygy
-        git config user.name "github-actions[bot]"
+        git config user.name  "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
-        git commit -m "Add Syzygy 3-4-5 tablebases to engines/syzygy/"
-        git push origin HEAD:main
+        git commit -m "Add core 3-4-5 Syzygy tablebases to engines/syzygy/" || echo "Nothing to commit"
+        git push
