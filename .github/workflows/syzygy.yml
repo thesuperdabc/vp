@@ -1,46 +1,59 @@
 name: Add 3-4-5 Syzygy tablebases to engines/syzygy
 
 on:
-  workflow_dispatch:            # run manually from the Actions tab
+  workflow_dispatch:          # run manually
 
 jobs:
   upload-syzygy:
     runs-on: ubuntu-latest
 
     steps:
-    # 1️⃣  Check out repo (Git LFS enabled) so we keep existing engines/ directory
-    - name: Checkout (with LFS)
+    # 1️⃣  Check out repo (LFS enabled)
+    - name: Checkout
       uses: actions/checkout@v4
       with:
         lfs: true
 
-    # 2️⃣  Install Git-LFS and aria2 (fast multi-threaded downloader)
-    - name: Install Git LFS & aria2
+    # 2️⃣  Install Git-LFS + aria2
+    - name: Install Git-LFS & aria2
       run: |
         sudo apt-get update
         sudo apt-get install -y git-lfs aria2
         git lfs install
 
-    # 3️⃣  Download every 3-4-5 file (<≈ 940 MB) to engines/syzygy
-    - name: Download Syzygy 3-4-5 tables
+    # 3️⃣  Download a <1 GB core 3-4-5 set
+    - name: Download Syzygy tables
       run: |
         mkdir -p engines/syzygy
         cd engines/syzygy
-        # Fetch a VALID list of URLs (WDL+DTZ).  This mirror is alive as of 2025-07-01.
-        curl -sSfL https://raw.githubusercontent.com/hi-ogawa/syzygy-tables/main/urls/3-4-5.txt > /tmp/tables.txt
-        # Download all files in parallel (resume-safe)
-        aria2c -c -j8 -x8 -s8 -i /tmp/tables.txt
 
-    # 4️⃣  Track with Git LFS, commit, and push using your personal token
+        # --- 3-piece --------------------------------------------------------
+        aria2c -q https://tablebase.lichess.ovh/tables/standard/3/KPvK.rtbw
+        aria2c -q https://tablebase.lichess.ovh/tables/standard/3/KPvK.rtbz
+
+        # --- 4-piece --------------------------------------------------------
+        aria2c -q https://tablebase.lichess.ovh/tables/standard/4/KQvK.rtbw
+        aria2c -q https://tablebase.lichess.ovh/tables/standard/4/KQvK.rtbz
+        aria2c -q https://tablebase.lichess.ovh/tables/standard/4/KRvK.rtbw
+        aria2c -q https://tablebase.lichess.ovh/tables/standard/4/KRvK.rtbz
+
+        # --- 5-piece --------------------------------------------------------
+        aria2c -q https://tablebase.lichess.ovh/tables/standard/5/KQvKP.rtbw
+        aria2c -q https://tablebase.lichess.ovh/tables/standard/5/KQvKP.rtbz
+        aria2c -q https://tablebase.lichess.ovh/tables/standard/5/KRPvK.rtbw
+        aria2c -q https://tablebase.lichess.ovh/tables/standard/5/KRPvK.rtbz
+        aria2c -q https://tablebase.lichess.ovh/tables/standard/5/KNvKP.rtbw
+        aria2c -q https://tablebase.lichess.ovh/tables/standard/5/KNvKP.rtbz
+
+    # 4️⃣  Track with LFS, commit, push (requires GH_PAT secret with repo-write)
     - name: Commit & push via PAT
       env:
-        GH_PAT: ${{ secrets.GH_PAT }}      # <- make sure this secret exists and has `repo` scope
+        GH_PAT: ${{ secrets.GH_PAT }}
       run: |
         git lfs track "*.rtbw" "*.rtbz"
         git add .gitattributes
         git add engines/syzygy
-        git config user.name "github-actions[bot]"
+        git config user.name  "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
-        git commit -m "Add complete 3-4-5 Syzygy tablebases to engines/syzygy" || echo "Nothing to commit"
-        # push using the token (no quotes around URL!)
+        git commit -m "Add core 3-4-5 Syzygy tablebases to engines/syzygy" || echo "Nothing to commit"
         git push https://x-access-token:${GH_PAT}@github.com/${{ github.repository }}.git HEAD:main
