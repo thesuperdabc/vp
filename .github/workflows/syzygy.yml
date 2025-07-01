@@ -1,0 +1,49 @@
+name: Add Syzygy to engines folder
+
+on:
+  workflow_dispatch:
+
+jobs:
+  upload-syzygy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout with LFS
+      uses: actions/checkout@v4
+      with:
+        lfs: true
+
+    - name: Install Git LFS and aria2
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y git-lfs aria2
+        git lfs install
+
+    - name: Create engines/syzygy/ and download tablebases
+      run: |
+        mkdir -p engines/syzygy
+        cd engines/syzygy
+
+        # Small, essential 3-4-5 piece TBs (< 1 GB total)
+        aria2c https://tablebase.lichess.ovh/tables/standard/3/KvK.rtbw
+        aria2c https://tablebase.lichess.ovh/tables/standard/3/KvK.rtbz
+        aria2c https://tablebase.lichess.ovh/tables/standard/3/KPK.rtbw
+        aria2c https://tablebase.lichess.ovh/tables/standard/3/KPK.rtbz
+        aria2c https://tablebase.lichess.ovh/tables/standard/4/KQvK.rtbw
+        aria2c https://tablebase.lichess.ovh/tables/standard/4/KQvK.rtbz
+        aria2c https://tablebase.lichess.ovh/tables/standard/4/KRvK.rtbw
+        aria2c https://tablebase.lichess.ovh/tables/standard/4/KRvK.rtbz
+        aria2c https://tablebase.lichess.ovh/tables/standard/5/KRPvK.rtbw
+        aria2c https://tablebase.lichess.ovh/tables/standard/5/KRPvK.rtbz
+        aria2c https://tablebase.lichess.ovh/tables/standard/5/KQvKP.rtbw
+        aria2c https://tablebase.lichess.ovh/tables/standard/5/KQvKP.rtbz
+
+    - name: Track and commit Syzygy files with Git LFS
+      run: |
+        git lfs track "*.rtbw" "*.rtbz"
+        git add .gitattributes
+        git add engines/syzygy
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git commit -m "Add Syzygy 3-4-5 tablebases to engines/syzygy/"
+        git push origin HEAD:main
