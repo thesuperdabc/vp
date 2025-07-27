@@ -35,9 +35,16 @@ jobs:
       - name: Injection For my Repo
         run: sed -i "s/Token/${{ secrets.LICHESS_KEY }}/g" config.yml
           
-      - name: Executing the stockfish
-        run: chmod +x ./engines/stockfish.exe
+      - name: Download and Extract Stockfish
+        run: |
+          mkdir -p ./engines
+          wget -O stockfish.zip http://abrok.eu/stockfish/latest/linux/stockfish_x64_avx2.zip
+          unzip stockfish.zip -d ./engines
+          ls -l ./engines
+          mv ./engines/stockfish_*_x64_avx2 ./engines/stockfish-ubuntu-x86-64-avx2
+          chmod +x ./engines/stockfish-ubuntu-x86-64-avx2
+          rm stockfish.zip
 
       - name: Running the bot
-        run: python user_interface.py 
+        run: python3 user_interface.py 
 
