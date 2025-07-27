@@ -68,7 +68,7 @@ opening_books:
     standard_white:
       selection: best_move                # Move selection is one of "weighted_random", "uniform_random" or "best_move".
       names:                              # List of names of books to use as black.
-        - White    
+        - white    
         - DefaultBook
 #   standard:
 #     selection: weighted_random          # Move selection is one of "weighted_random", "uniform_random" or "best_move".
@@ -205,5 +205,5 @@ messages:
 books:                                    # Names of the opening books (to be used above in the opening_books section) and paths to the opening books.
   DefaultBook: "./engines/DefaultBook.bin"
   Torma: "./engines/Torma.bin"
-  White: "./engines/white.bin"
+  white: "./engines/white.bin"
   Black: "./engines/black.bin"
