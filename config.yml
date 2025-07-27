@@ -189,10 +189,10 @@ messages:
   #   {cpu} to insert CPU information
   #   {ram} to insert RAM size
   # Any other words in curly braces will be removed.
-  greeting: "Humpo Dumpo! I am Endogenetic-Bot made by Realboy9000.Looking forward to start,good luck. " # Message sent to the opponent at the beginning of a game.
-  goodbye: "Good game, see you next time."                                             # Message sent to the opponent after the end of a game.
-  greeting_spectators: "Hey, I'm running {engine}. Type !help for a list of commands." # Message sent to the spectators at the beginning of a game.
-  goodbye_spectators: "Thanks for watching."                                           # Message sent to the spectators after the end of a game.
+  #greeting: "Humpo Dumpo! I am Endogenetic-Bot made by Realboy9000.Looking forward to start,good luck. " # Message sent to the opponent at the beginning of a game.
+  #goodbye: "Good game, see you next time."                                             # Message sent to the opponent after the end of a game.
+  #greeting_spectators: "Hey, I'm running {engine}. Type !help for a list of commands." # Message sent to the spectators at the beginning of a game.
+  #goodbye_spectators: "Thanks for watching."                                           # Message sent to the spectators after the end of a game.
 
 # whitelist:                              # List of users whose challenges are always accepted.
 #   - Username1
